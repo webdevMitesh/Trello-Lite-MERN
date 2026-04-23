@@ -1,0 +1,67 @@
+.layout {
+    display: flex;
+    height: 100vh;
+    background: linear-gradient(135deg, #eef2ff, #f8fafc);
+}
+
+.main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.content {
+    flex: 1;
+    padding: 25px;
+    overflow-y: auto;
+}
+
+.content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.content::-webkit-scrollbar-thumb {
+    background: #c7d2fe;
+    border-radius: 10px;
+}
+
+.board {
+    display: flex;
+    gap: 18px;
+    overflow-x: auto;
+    align-items: flex-start;
+}
+
+.board::-webkit-scrollbar {
+    height: 8px;
+}
+
+.board::-webkit-scrollbar-thumb {
+    background: #c7d2fe;
+    border-radius: 10px;
+}
+
+.column {
+    min-width: 300px;
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(8px);
+    border-radius: 16px;
+    padding: 15px;
+    box-shadow:
+        0 10px 25px rgba(0, 0, 0, 0.08),
+        0 4px 10px rgba(0, 0, 0, 0.05);
+    transition: box-shadow 0.2s ease;
+}
+
+.column:hover {
+    box-shadow:
+        0 14px 30px rgba(0, 0, 0, 0.12),
+        0 6px 15px rgba(0, 0, 0, 0.08);
+}
+
+@media (max-width: 768px) {
+    .content {
+        padding: 15px;
+    }
+}

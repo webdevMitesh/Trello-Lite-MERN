@@ -1,0 +1,42 @@
+.board-selector {
+    position: relative;
+    display: inline-block;
+}
+
+.board-selector select {
+    width: 180px;
+    padding: 10px 14px;
+    padding-right: 36px;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(8px);
+    font-size: 14px;
+    font-weight: 500;
+    color: #111827;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    appearance: none;
+}
+
+.board-selector select:hover {
+    border-color: #a5b4fc;
+    background: #ffffff;
+}
+
+.board-selector select:focus {
+    outline: none;
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+}
+
+.board-selector::after {
+    content: "⌄";
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    font-size: 12px;
+    color: #6b7280;
+}

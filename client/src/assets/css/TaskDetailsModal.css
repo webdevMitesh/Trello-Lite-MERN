@@ -1,0 +1,38 @@
+.task-detail-desc {
+    margin-top: 10px;
+    color: #6b7280;
+    line-height: 1.5;
+}
+
+.status-badge {
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.status-badge.todo {
+    background: #e0e7ff;
+    color: #4f46e5;
+}
+
+.status-badge.done {
+    background: #dcfce7;
+    color: #16a34a;
+}
+
+.task-detail-row {
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+}
+
+.status-badge {
+    background: #eef2ff;
+    color: #4f46e5;
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 500;
+}

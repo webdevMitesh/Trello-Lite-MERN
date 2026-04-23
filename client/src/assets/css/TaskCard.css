@@ -1,0 +1,79 @@
+.task-card {
+    background: #ffffff;
+    padding: 14px;
+    border-radius: 14px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+    cursor: grab;
+    transition: box-shadow 0.25s ease, background 0.2s ease;
+    user-select: none;
+}
+
+.task-card {
+    touch-action: manipulation;
+}
+
+.task-card:hover {
+    background: #f9fafb;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+}
+
+.task-card:active {
+    cursor: grabbing;
+}
+
+.task-top {
+    margin-bottom: 6px;
+}
+
+.tag {
+    font-size: 11px;
+    padding: 4px 8px;
+    border-radius: 6px;
+    background: #eef2ff;
+    color: #6366f1;
+    font-weight: 500;
+}
+
+.task-title {
+    font-size: 15px;
+    font-weight: 600;
+    margin: 6px 0;
+    color: #111827;
+}
+
+.task-desc {
+    font-size: 12px;
+    color: #6b7280;
+    margin-bottom: 10px;
+    line-height: 1.4;
+}
+
+.progress {
+    height: 6px;
+    background: #e5e7eb;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    border-radius: 10px;
+}
+
+.task-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.avatars span {
+    font-size: 14px;
+    margin-right: 4px;
+}
+
+.task-time {
+    font-size: 12px;
+    color: #6b7280;
+}

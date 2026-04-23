@@ -1,0 +1,115 @@
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.55);
+    backdrop-filter: blur(10px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-actions button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.modal {
+    width: 380px;
+    max-width: 90%;
+    padding: 30px;
+    border-radius: 20px;
+    background: #ffffff;
+    box-shadow:
+        0 20px 40px rgba(0, 0, 0, 0.15),
+        0 8px 16px rgba(0, 0, 0, 0.1);
+    animation: modalFade 0.25s ease;
+}
+
+@keyframes modalFade {
+    from {
+        transform: translateY(30px) scale(0.95);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+}
+
+.modal h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 16px;
+}
+
+.modal input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 14px 16px;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    background: #f8fafc;
+    font-size: 14px;
+    color: #111827;
+    margin-bottom: 10px;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.modal input:hover {
+    border-color: #c7d2fe;
+}
+
+.modal input:focus {
+    background: #ffffff;
+    border-color: #6c63ff;
+    box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.15);
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 22px;
+}
+
+.modal-actions button {
+    padding: 10px 18px;
+    border-radius: 10px;
+    border: none;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.modal-actions button:first-child {
+    background: #f1f5f9;
+    color: #475569;
+}
+
+.modal-actions button:first-child:hover {
+    background: #e2e8f0;
+}
+
+.modal-actions button:last-child {
+    background: linear-gradient(135deg, #6c63ff, #8a7cff);
+    color: #ffffff;
+}
+
+.modal-actions button:last-child:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.modal-actions button:last-child:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+.modal-actions button:active {
+    transform: scale(0.96);
+}
