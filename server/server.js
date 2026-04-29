@@ -153,7 +153,6 @@ import http from "http";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import { Server } from "socket.io";
-
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import boardRoutes from "./routes/boardRoutes.js";
@@ -161,45 +160,42 @@ import listRoutes from "./routes/listRoutes.js";
 import cardRoutes from "./routes/cardRoutes.js";
 import { protect } from "./middleware/authMiddleware.js";
 
-// Load env
 dotenv.config();
 
 const app = express();
 
-// --------------------
-// 🔐 SECURITY & MIDDLEWARE
-// --------------------
+//SECURITY
 app.set("trust proxy", 1);
-
 app.use(helmet());
 
 app.use(
     rateLimit({
-        windowMs: 15 * 60 * 1000, // 15 min
+        windowMs: 15 * 60 * 1000,
         max: 100,
-        standardHeaders: true,
-        legacyHeaders: false,
     })
 );
 
 app.use(express.json());
 
-// ✅ CORS (fixed for production)
+// CORS (STRICT FIX)
+const allowedOrigin = process.env.CLIENT_URL;
+
+if (!allowedOrigin) {
+    console.error("CLIENT_URL is NOT set in environment variables");
+}
+
 app.use(
     cors({
-        origin: process.env.CLIENT_URL || "*",
+        origin: allowedOrigin,
         credentials: true,
     })
 );
 
-// --------------------
-// 📌 ROUTES
-// --------------------
+//ROUTES
 app.get("/", (req, res) => {
     res.send("API is running...");
 });
 
-// Protected test route
 app.get("/api/test", protect, (req, res) => {
     res.json({
         message: "Protected route working",
@@ -207,39 +203,32 @@ app.get("/api/test", protect, (req, res) => {
     });
 });
 
-// API routes
 app.use("/api/auth", authRoutes);
 app.use("/api/boards", boardRoutes);
 app.use("/api/lists", listRoutes);
 app.use("/api/cards", cardRoutes);
 
-// --------------------
-// ❌ ERROR HANDLER
-// --------------------
+//ERROR HANDLER
 app.use((err, req, res, next) => {
-    console.error("ERROR:", err.stack);
-
+    console.error(err.stack);
     res.status(err.status || 500).json({
         success: false,
-        message: err.message || "Something went wrong",
+        message: err.message || "Server Error",
     });
 });
 
-// --------------------
-// 🔌 SOCKET.IO SETUP
-// --------------------
+// 🔌 SOCKET.IO
 const server = http.createServer(app);
 
 const io = new Server(server, {
     cors: {
-        origin: process.env.CLIENT_URL || "*",
+        origin: allowedOrigin,
         credentials: true,
     },
 });
 
-// Socket events
 io.on("connection", (socket) => {
-    console.log("🔌 User connected:", socket.id);
+    console.log("🔌 Connected:", socket.id);
 
     socket.on("joinBoard", (boardId) => {
         if (boardId) socket.join(boardId);
@@ -262,28 +251,23 @@ io.on("connection", (socket) => {
     });
 
     socket.on("disconnect", () => {
-        console.log("❌ User disconnected:", socket.id);
+        console.log("Disconnected:", socket.id);
     });
 });
 
-// Make io globally accessible
 app.set("io", io);
 
-// --------------------
-// 🚀 START SERVER
-// --------------------
+// START SERVER
 const PORT = process.env.PORT || 5000;
 
 const startServer = async () => {
     try {
-        // ✅ Connect DB (DO NOT crash app if fails)
         await connectDB();
 
         server.listen(PORT, "0.0.0.0", () => {
-            console.log(`🚀 Server running on port ${PORT}`);
+            console.log(`Server running on port ${PORT}`);
         });
     } catch (error) {
-        // ❌ Do NOT use process.exit in production (Render issue fix)
         console.error("Startup Error:", error.message);
     }
 };
