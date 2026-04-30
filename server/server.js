@@ -153,6 +153,7 @@ import http from "http";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import { Server } from "socket.io";
+
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import boardRoutes from "./routes/boardRoutes.js";
@@ -164,7 +165,7 @@ dotenv.config();
 
 const app = express();
 
-//SECURITY
+// ================= SECURITY =================
 app.set("trust proxy", 1);
 app.use(helmet());
 
@@ -177,12 +178,12 @@ app.use(
 
 app.use(express.json());
 
-// CORS (STRICT FIX)
-const allowedOrigin = process.env.CLIENT_URL;
+// ================= CORS FIX =================
 
-if (!allowedOrigin) {
-    console.error("CLIENT_URL is NOT set in environment variables");
-}
+// fallback if env not set
+const allowedOrigin =
+    process.env.CLIENT_URL ||
+    "https://trello-lite-mern-webdevmiteshs-projects.vercel.app";
 
 app.use(
     cors({
@@ -191,7 +192,11 @@ app.use(
     })
 );
 
-//ROUTES
+// handle preflight requests (VERY IMPORTANT)
+app.options("*", cors());
+
+// ================= ROUTES =================
+
 app.get("/", (req, res) => {
     res.send("API is running...");
 });
@@ -208,7 +213,7 @@ app.use("/api/boards", boardRoutes);
 app.use("/api/lists", listRoutes);
 app.use("/api/cards", cardRoutes);
 
-//ERROR HANDLER
+// ================= ERROR HANDLER =================
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(err.status || 500).json({
@@ -217,7 +222,8 @@ app.use((err, req, res, next) => {
     });
 });
 
-// 🔌 SOCKET.IO
+// ================= SOCKET.IO =================
+
 const server = http.createServer(app);
 
 const io = new Server(server, {
@@ -257,7 +263,8 @@ io.on("connection", (socket) => {
 
 app.set("io", io);
 
-// START SERVER
+// ================= START SERVER =================
+
 const PORT = process.env.PORT || 5000;
 
 const startServer = async () => {
