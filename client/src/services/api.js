@@ -55,6 +55,7 @@ const BASE_URL = "https://trello-lite-mern.onrender.com/api";
 
 if (!BASE_URL) {
   console.error("REACT_APP_API_URL is not defined");
+  console.log("NEW API URL LOADED:", BASE_URL);
 }
 
 // Create axios instance
