@@ -178,22 +178,32 @@ app.use(
 
 app.use(express.json());
 
-// ================= CORS FIX =================
+// ================= CORS (FIXED) =================
 
-// fallback if env not set
+// fallback if env missing
 const allowedOrigin =
     process.env.CLIENT_URL ||
     "https://trello-lite-mern-webdevmiteshs-projects.vercel.app";
 
-app.use(
-    cors({
-        origin: allowedOrigin,
-        credentials: true,
-    })
-);
+// Allow multiple origins (better for dev + prod)
+const corsOptions = {
+    origin: function (origin, callback) {
+        const allowed = [
+            "http://localhost:3000",
+            allowedOrigin,
+        ];
 
-// handle preflight requests (VERY IMPORTANT)
-app.options("*", cors());
+        // allow requests with no origin (like Postman)
+        if (!origin || allowed.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error("CORS not allowed"));
+        }
+    },
+    credentials: true,
+};
+
+app.use(cors(corsOptions));
 
 // ================= ROUTES =================
 
@@ -215,7 +225,7 @@ app.use("/api/cards", cardRoutes);
 
 // ================= ERROR HANDLER =================
 app.use((err, req, res, next) => {
-    console.error(err.stack);
+    console.error("❌ ERROR:", err.message);
     res.status(err.status || 500).json({
         success: false,
         message: err.message || "Server Error",
@@ -228,7 +238,7 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
     cors: {
-        origin: allowedOrigin,
+        origin: [allowedOrigin],
         credentials: true,
     },
 });
@@ -257,7 +267,7 @@ io.on("connection", (socket) => {
     });
 
     socket.on("disconnect", () => {
-        console.log("Disconnected:", socket.id);
+        console.log("🔌 Disconnected:", socket.id);
     });
 });
 
@@ -272,10 +282,11 @@ const startServer = async () => {
         await connectDB();
 
         server.listen(PORT, "0.0.0.0", () => {
-            console.log(`Server running on port ${PORT}`);
+            console.log(`🚀 Server running on port ${PORT}`);
         });
     } catch (error) {
-        console.error("Startup Error:", error.message);
+        console.error("❌ Startup Error:", error.message);
+        process.exit(1);
     }
 };
 
