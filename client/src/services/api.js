@@ -50,7 +50,8 @@
 import axios from "axios";
 
 //Strict base URL (no localhost fallback)
-const BASE_URL = process.env.REACT_APP_API_URL;
+// const BASE_URL = process.env.REACT_APP_API_URL;
+const BASE_URL = "https://trello-lite-mern.onrender.com/api";
 
 if (!BASE_URL) {
   console.error("REACT_APP_API_URL is not defined");
